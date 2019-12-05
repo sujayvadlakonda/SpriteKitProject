@@ -16,7 +16,13 @@ struct PhysicsCategory {
 }
 
 class GameScene: SKScene {
+    let ball = SKSpriteNode(imageNamed: "Ball")
     
+    override func didMove(to view: SKView) {
+        backgroundColor = SKColor.black
+        ball.position = CGPoint(x: size.width / 2, y: size.height * 0.9)
+        addChild(ball)
+    }
     
     
 }
