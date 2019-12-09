@@ -12,11 +12,17 @@ struct PhysicsCategory {
 class GameScene: SKScene {
     let ball = SKSpriteNode(imageNamed: "Ball")
     let paddle = SKSpriteNode(imageNamed: "Paddle")
-    var motionManager: CMMotionManager!
+    var motionManager = CMMotionManager()
     var timer: Timer!
     
     
     override func didMove(to view: SKView) {
+        if (motionManager.isGyroAvailable) {
+            startGyros()
+        } else {
+            // TODO show button controls instead
+        }
+        
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
@@ -58,6 +64,7 @@ class GameScene: SKScene {
     }
     
     func startGyros() {
+        
         if motionManager.isGyroAvailable {
             self.motionManager.gyroUpdateInterval = 1.0 / 60.0
             self.motionManager.startGyroUpdates()
@@ -67,12 +74,10 @@ class GameScene: SKScene {
                           repeats: true, block: { (timer) in
                             // Get the gyro data.
                             if let data = self.motionManager.gyroData {
-                                let x = data.rotationRate.x
-                                let y = data.rotationRate.y
                                 let z = data.rotationRate.z
                                 
                                 // Use the gyroscope data in your app.
-                                self.paddle.position = CGPoint(x: self.paddle.position.x, y: CGFloat(z * 100))
+                                self.paddle.position = CGPoint(x: CGFloat(self.paddle.position.x) - CGFloat(z * 10), y: self.paddle.position.y)
                             }
             })
             
