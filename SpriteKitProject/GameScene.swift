@@ -14,6 +14,7 @@ class GameScene: SKScene {
     let paddle = SKSpriteNode(imageNamed: "Paddle")
     var timer = 0
     var newRound = true
+    var livesLeft = 3
     
     
     override func didMove(to view: SKView) {
@@ -58,6 +59,10 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         //Stops the ball from moving if it touches the bottom
+        if livesLeft == 0
+        {
+            newRound = false
+        }
         if ball.position.y <= 20
         {
             ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
@@ -66,6 +71,7 @@ class GameScene: SKScene {
             {
                 ball.position = CGPoint(x: size.width / 2, y: size.height * 0.3)
                 newRound = true
+                livesLeft -= 1
             }
         }
         else{
