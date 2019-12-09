@@ -1,5 +1,5 @@
 import SpriteKit
-
+import CoreMotion
 
 struct PhysicsCategory {
     static let none      : UInt32 = 0
@@ -12,6 +12,8 @@ struct PhysicsCategory {
 class GameScene: SKScene {
     let ball = SKSpriteNode(imageNamed: "Ball")
     let paddle = SKSpriteNode(imageNamed: "Paddle")
+    var motionManager: CMMotionManager!
+    var timer: Timer!
     
     
     override func didMove(to view: SKView) {
@@ -55,7 +57,38 @@ class GameScene: SKScene {
         paddle.physicsBody?.collisionBitMask = PhysicsCategory.paddle
     }
     
+    func startGyros() {
+        if motionManager.isGyroAvailable {
+            self.motionManager.gyroUpdateInterval = 1.0 / 60.0
+            self.motionManager.startGyroUpdates()
+            
+            // Configure a timer to fetch the accelerometer data.
+            timer = Timer(fire: Date(), interval: (1.0/60.0),
+                          repeats: true, block: { (timer) in
+                            // Get the gyro data.
+                            if let data = self.motionManager.gyroData {
+                                let x = data.rotationRate.x
+                                let y = data.rotationRate.y
+                                let z = data.rotationRate.z
+                                
+                                // Use the gyroscope data in your app.
+                                self.paddle.position = CGPoint(x: self.paddle.position.x, y: CGFloat(z * 100))
+                            }
+            })
+            
+            // Add the timer to the current run loop.
+            RunLoop.current.add(timer!, forMode: RunLoop.Mode.default)
+        }
+    }
     
+    func stopGyros() {
+        if self.timer != nil {
+            self.timer?.invalidate()
+            self.timer = nil
+            
+            self.motionManager.stopGyroUpdates()
+        }
+    }
 }
 
 extension GameScene: SKPhysicsContactDelegate {
