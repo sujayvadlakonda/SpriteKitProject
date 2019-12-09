@@ -1,12 +1,5 @@
-//
-//  GameScene.swift
-//  SpriteKitProject
-//
-//  Created by Vadlakonda, Sujay V on 12/3/19.
-//  Copyright © 2019 Vadlakonda, Sujay V. All rights reserved.
-//
-
 import SpriteKit
+
 
 struct PhysicsCategory {
     static let none      : UInt32 = 0
@@ -15,40 +8,11 @@ struct PhysicsCategory {
     static let brick: UInt32 = 0b10
 }
 
-func +(left: CGPoint, right: CGPoint) -> CGPoint {
-    return CGPoint(x: left.x + right.x, y: left.y + right.y)
-}
-
-func -(left: CGPoint, right: CGPoint) -> CGPoint {
-    return CGPoint(x: left.x - right.x, y: left.y - right.y)
-}
-
-func *(point: CGPoint, scalar: CGFloat) -> CGPoint {
-    return CGPoint(x: point.x * scalar, y: point.y * scalar)
-}
-
-func /(point: CGPoint, scalar: CGFloat) -> CGPoint {
-    return CGPoint(x: point.x / scalar, y: point.y / scalar)
-}
-
-#if !(arch(x86_64) || arch(arm64))
-func sqrt(a: CGFloat) -> CGFloat {
-    return CGFloat(sqrtf(Float(a)))
-}
-#endif
-
-extension CGPoint {
-    func length() -> CGFloat {
-        return sqrt(x*x + y*y)
-    }
-    
-    func normalized() -> CGPoint {
-        return self / length()
-    }
-}
 
 class GameScene: SKScene {
     let ball = SKSpriteNode(imageNamed: "Ball")
+    let paddle = SKSpriteNode(imageNamed: "Paddle")
+    
     
     override func didMove(to view: SKView) {
         physicsWorld.gravity = .zero
@@ -77,7 +41,21 @@ class GameScene: SKScene {
 
         let impulse = CGVector(dx: 3.0, dy: 3.0);
         ball.physicsBody?.applyImpulse(impulse)
+        
+        // paddle for the user
+        paddle.position = CGPoint(x: size.width / 2, y: size.height * 0.1)
+        paddle.size.width /= 4
+        paddle.size.height /= 5
+        addChild(paddle)
+        
+        paddle.physicsBody = SKPhysicsBody(rectangleOf: ball.size)
+        paddle.physicsBody?.isDynamic = true
+        paddle.physicsBody?.categoryBitMask = PhysicsCategory.ball
+        paddle.physicsBody?.contactTestBitMask = PhysicsCategory.none
+        paddle.physicsBody?.collisionBitMask = PhysicsCategory.paddle
     }
+    
+    
 }
 
 extension GameScene: SKPhysicsContactDelegate {
