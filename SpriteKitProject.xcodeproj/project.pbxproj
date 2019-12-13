@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20C754E823A3E5A300A39E66 /* FTButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C754E723A3E5A300A39E66 /* FTButtonNode.swift */; };
 		7A5018412396C02700851CA7 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5018402396C02700851CA7 /* WelcomeViewController.swift */; };
 		7A5018432396C03C00851CA7 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5018422396C03C00851CA7 /* GameOverScene.swift */; };
 		C2CCC31F2396B70E00195244 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CCC31E2396B70E00195244 /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		20C754E723A3E5A300A39E66 /* FTButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTButtonNode.swift; sourceTree = "<group>"; };
 		7A5018402396C02700851CA7 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		7A5018422396C03C00851CA7 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		C2CCC31B2396B70E00195244 /* SpriteKitProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpriteKitProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +77,7 @@
 				C2CCC3302396B70F00195244 /* Info.plist */,
 				7A5018402396C02700851CA7 /* WelcomeViewController.swift */,
 				7A5018422396C03C00851CA7 /* GameOverScene.swift */,
+				20C754E723A3E5A300A39E66 /* FTButtonNode.swift */,
 			);
 			path = SpriteKitProject;
 			sourceTree = "<group>";
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A5018432396C03C00851CA7 /* GameOverScene.swift in Sources */,
+				20C754E823A3E5A300A39E66 /* FTButtonNode.swift in Sources */,
 				C2CCC3252396B70E00195244 /* GameScene.swift in Sources */,
 				7A5018412396C02700851CA7 /* WelcomeViewController.swift in Sources */,
 				C2CCC3272396B70E00195244 /* GameViewController.swift in Sources */,

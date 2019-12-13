@@ -18,13 +18,29 @@ class GameScene: SKScene {
     var time = 0
     var newRound = true
     var livesLeft = 3
+    var leftBtn: FTButtonNode!
+    var rightBtn: FTButtonNode!
     
     
     override func didMove(to view: SKView) {
         if (motionManager.isGyroAvailable) {
             startGyros()
         } else {
-            // TODO show button controls instead
+            leftBtn = FTButtonNode(imageNamed: "Area")
+            leftBtn.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(leftBtnTap))
+            leftBtn.position = CGPoint(x: size.width / 4, y: size.height / 2)
+            leftBtn.size.width = size.width / 2;
+            leftBtn.size.height = size.height;
+            leftBtn.name = "leftBtn"
+            self.addChild(leftBtn)
+
+            rightBtn = FTButtonNode(imageNamed: "Area")
+            rightBtn.setButtonAction(target: self, triggerEvent: .TouchUpInside, action: #selector(rightBtnTap))
+            rightBtn.position = CGPoint(x: size.width / 4 * 3, y: size.height / 2)
+            rightBtn.size.width = size.width / 2;
+            rightBtn.size.height = size.height;
+            rightBtn.name = "rightBtn"
+            self.addChild(rightBtn)
         }
         
         physicsWorld.gravity = .zero
@@ -76,6 +92,16 @@ class GameScene: SKScene {
         }
         
         
+    }
+    
+    @objc func leftBtnTap() {
+        print("leftBtnTap tapped")
+        paddle.position = CGPoint(x: paddle.position.x - 10, y: paddle.position.y)
+    }
+    
+    @objc func rightBtnTap() {
+        print("rightBtnTap tapped")
+        paddle.position = CGPoint(x: paddle.position.x + 10, y: paddle.position.y)
     }
     
     override func update(_ currentTime: TimeInterval) {
