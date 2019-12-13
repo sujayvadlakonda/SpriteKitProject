@@ -83,8 +83,7 @@ class GameScene: SKScene {
         if livesLeft == 0
         {
             newRound = false
-        }
-        if ball.position.y <= 20
+        } else if ball.position.y <= 20
         {
             ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             time += 1
