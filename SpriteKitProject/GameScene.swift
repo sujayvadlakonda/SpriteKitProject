@@ -12,6 +12,7 @@ struct PhysicsCategory {
 class GameScene: SKScene {
     let ball = SKSpriteNode(imageNamed: "Ball")
     let paddle = SKSpriteNode(imageNamed: "Paddle")
+    var hearts = [SKSpriteNode(imageNamed: "Heart"), SKSpriteNode(imageNamed: "Heart"), SKSpriteNode(imageNamed: "Heart")]
     var motionManager = CMMotionManager()
     var timer: Timer!
     var time = 0
@@ -63,6 +64,18 @@ class GameScene: SKScene {
         paddle.physicsBody?.categoryBitMask = PhysicsCategory.paddle
         paddle.physicsBody?.contactTestBitMask = PhysicsCategory.none
         paddle.physicsBody?.collisionBitMask = PhysicsCategory.ball
+        
+        hearts[0].position = CGPoint(x: size.width * 0.033, y: size.height * 0.9)
+        hearts[1].position = CGPoint(x: size.width * 0.066, y: size.height * 0.9)
+        hearts[2].position = CGPoint(x: size.width * 0.099, y: size.height * 0.9)
+
+        for heart in hearts {
+            heart.size.width /= 64
+            heart.size.height /= 64
+            addChild(heart)
+        }
+        
+        
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -80,6 +93,8 @@ class GameScene: SKScene {
                 ball.position = CGPoint(x: size.width / 2, y: size.height * 0.3)
                 newRound = true
                 livesLeft -= 1
+                removeChildren(in: [hearts[hearts.count - 1]])
+                hearts.removeLast()
             }
         }
         else{
@@ -90,7 +105,8 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if newRound
         {
-            let impulse = CGVector(dx: 3.0, dy: 3.0)
+            let dx = Double.random(in: -3..<3)
+            let impulse = CGVector(dx: dx, dy: 3.0)
             ball.physicsBody?.applyImpulse(impulse)
             newRound = false
         }
