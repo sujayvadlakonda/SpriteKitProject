@@ -59,7 +59,7 @@ class GameScene: SKScene {
         paddle.size.height /= 5
         addChild(paddle)
         
-        paddle.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: paddle.size.width, height: paddle.size.height - 20))
+        paddle.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: paddle.size.width, height: paddle.size.height))
         paddle.physicsBody?.isDynamic = false
         paddle.physicsBody?.categoryBitMask = PhysicsCategory.paddle
         paddle.physicsBody?.contactTestBitMask = PhysicsCategory.none

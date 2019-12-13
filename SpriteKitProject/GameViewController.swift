@@ -32,13 +32,13 @@ class GameViewController: UIViewController {
         motionManager.startAccelerometerUpdates()
         
         
-        let _ = Timer.scheduledTimer(timeInterval: 1.0, target:self, selector: #selector(self.fire), userInfo:nil,repeats: true)
+        let _ = Timer.scheduledTimer(timeInterval: 1.0, target:self, selector: #selector(self.loop), userInfo:nil,repeats: true)
         //
     }
     
     
     
-    @objc func fire()
+    @objc func loop()
     {
         if(scene.livesLeft == 0){
             self.performSegue(withIdentifier: "666", sender: self)
@@ -46,8 +46,23 @@ class GameViewController: UIViewController {
         
     }
     
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
     
+    override var keyCommands: [UIKeyCommand]? {
+        return [
+            UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: .shift, action: #selector(left), discoverabilityTitle: "Back"),
+            UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: .shift, action: #selector(right), discoverabilityTitle: "Back")
+        ]
+    }
     
+    @objc private func left() {
+        scene.paddle.position.x -= 5
+    }
+    @objc private func right() {
+        scene.paddle.position.x += 5
+    }
     
 
 }
