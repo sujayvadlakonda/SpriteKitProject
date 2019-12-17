@@ -58,10 +58,10 @@ class GameViewController: UIViewController {
     }
     
     @objc private func left() {
-        scene.paddle.position.x -= 5
+        scene.paddle.position.x -= 20
     }
     @objc private func right() {
-        scene.paddle.position.x += 5
+        scene.paddle.position.x += 20
     }
     
 

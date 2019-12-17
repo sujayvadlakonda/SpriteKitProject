@@ -69,10 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.isDynamic = true
         ball.physicsBody?.categoryBitMask = PhysicsCategory.ball
         ball.physicsBody?.contactTestBitMask = PhysicsCategory.none
-        ball.physicsBody?.collisionBitMask = PhysicsCategory.wall | PhysicsCategory.paddle
-
-
-        
+        ball.physicsBody?.collisionBitMask = PhysicsCategory.wall | PhysicsCategory.paddle | PhysicsCategory.brick
         ball.physicsBody?.restitution = 1.0
         ball.physicsBody?.friction = 0.0
         ball.physicsBody?.linearDamping = 0.0
@@ -86,11 +83,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         paddle.size.height /= 5
         addChild(paddle)
         
-        paddle.physicsBody = SKPhysicsBody(rectangleOf: ball.size)
-        paddle.physicsBody?.isDynamic = true
-        paddle.physicsBody?.categoryBitMask = PhysicsCategory.ball
-        paddle.physicsBody?.contactTestBitMask = PhysicsCategory.none
-        paddle.physicsBody?.collisionBitMask = PhysicsCategory.paddle
+        paddle.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: paddle.size.width, height: paddle.size.height))
+        paddle.physicsBody?.isDynamic = false
+        paddle.physicsBody?.categoryBitMask = PhysicsCategory.paddle
+        paddle.physicsBody?.contactTestBitMask = PhysicsCategory.ball
+        paddle.physicsBody?.collisionBitMask = PhysicsCategory.ball
         
         //Laying bricks
         var brickYPos: Int = Int(size.height) - brickHeight
@@ -136,8 +133,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 newBrick.physicsBody = SKPhysicsBody(rectangleOf: newBrick.size)
                 newBrick.physicsBody?.isDynamic = false
                 newBrick.physicsBody?.categoryBitMask = PhysicsCategory.brick
-                ball.physicsBody?.collisionBitMask = PhysicsCategory.brick
-                newBrick.physicsBody?.contactTestBitMask = newBrick.physicsBody!.collisionBitMask
+                newBrick.physicsBody?.collisionBitMask = PhysicsCategory.ball
+                newBrick.physicsBody?.contactTestBitMask = PhysicsCategory.ball
                 
                 newBrick.colorBlendFactor = 1.0
                 newBrick.color = brickColor
@@ -148,11 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             brickYPos -= (brickHeight + brickRowSeperation)
         }
-        paddle.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: paddle.size.width, height: paddle.size.height))
-        paddle.physicsBody?.isDynamic = false
-        paddle.physicsBody?.categoryBitMask = PhysicsCategory.paddle
-        paddle.physicsBody?.contactTestBitMask = PhysicsCategory.ball
-        paddle.physicsBody?.collisionBitMask = PhysicsCategory.none
+
         
         hearts[0].position = CGPoint(x: size.width * 0.033, y: size.height * 0.9)
         hearts[1].position = CGPoint(x: size.width * 0.066, y: size.height * 0.9)
@@ -218,11 +211,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         if contact.bodyA.categoryBitMask == PhysicsCategory.brick
         {
-            contact.bodyA.node?.removeFromParent()
+            if contact.bodyB.node?.name == "ball" {
+                contact.bodyA.node?.removeFromParent()
+            }
         }
         if contact.bodyB.categoryBitMask == PhysicsCategory.brick
         {
-            contact.bodyB.node?.removeFromParent()
+            if contact.bodyA.node?.name == "ball" {
+                contact.bodyB.node?.removeFromParent()
+            }
         }
     }
     
@@ -238,7 +235,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func randomImpulse() {
         let dx = Double.random(in: -3..<3)
-        let impulse = CGVector(dx: dx, dy: 3.0)
+        let impulse = CGVector(dx: dx, dy: 10.0)
         ball.physicsBody?.applyImpulse(impulse)
     }
     
