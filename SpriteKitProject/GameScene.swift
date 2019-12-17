@@ -22,6 +22,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var leftBtn: FTButtonNode!
     var rightBtn: FTButtonNode!
     
+    //brick layout controls
+    let brickMaxWidth: Int = 100
+    let brickMinWidth: Int = 50
+    let brickHeight: Int = 25
+    let brickGap: Int = 10
+    let brickRowSeperation: Int = 10
+    
     
     override func didMove(to view: SKView) {
         if (motionManager.isGyroAvailable) {
@@ -79,6 +86,68 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         paddle.size.height /= 5
         addChild(paddle)
         
+        paddle.physicsBody = SKPhysicsBody(rectangleOf: ball.size)
+        paddle.physicsBody?.isDynamic = true
+        paddle.physicsBody?.categoryBitMask = PhysicsCategory.ball
+        paddle.physicsBody?.contactTestBitMask = PhysicsCategory.none
+        paddle.physicsBody?.collisionBitMask = PhysicsCategory.paddle
+        
+        //Laying bricks
+        var brickYPos: Int = Int(size.height) - brickHeight
+        var brickColor: UIColor
+        
+        for n in 1...5
+        {
+            switch(n)
+            {//rows color
+            case 1:
+                brickColor = .red
+            case 2:
+                brickColor = .orange
+            case 3:
+                brickColor = .yellow
+            case 4:
+                brickColor = .green
+            case 5:
+                brickColor = .blue
+            
+            default:
+                brickColor = UIColor.black
+            }
+            
+            var screenWidth = 0
+            
+            while(screenWidth < Int(size.width))
+            {
+                let newBrick = SKSpriteNode(imageNamed: "Brick")
+                var width = Int.random(in: brickMinWidth...brickMaxWidth)
+                
+                newBrick.size.width = CGFloat(width)
+                
+                if Int(size.width) - (width + screenWidth) < brickMinWidth + brickGap //This prevents tiny bricks on the screen edge
+                {
+                    width = Int(size.width) - screenWidth
+                }
+                
+                
+                newBrick.size.height = CGFloat(brickHeight)
+                newBrick.position = CGPoint(x: CGFloat(screenWidth) + newBrick.size.width/2, y: CGFloat(brickYPos))
+                
+                newBrick.physicsBody = SKPhysicsBody(rectangleOf: newBrick.size)
+                newBrick.physicsBody?.isDynamic = false
+                newBrick.physicsBody?.categoryBitMask = PhysicsCategory.brick
+                ball.physicsBody?.collisionBitMask = PhysicsCategory.brick
+                newBrick.physicsBody?.contactTestBitMask = newBrick.physicsBody!.collisionBitMask
+                
+                newBrick.colorBlendFactor = 1.0
+                newBrick.color = brickColor
+                
+                addChild(newBrick)
+                
+                screenWidth += Int(newBrick.size.width) + brickGap
+            }
+            brickYPos -= (brickHeight + brickRowSeperation)
+        }
         paddle.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: paddle.size.width, height: paddle.size.height))
         paddle.physicsBody?.isDynamic = false
         paddle.physicsBody?.categoryBitMask = PhysicsCategory.paddle
@@ -146,6 +215,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 randomImpulse()
             }
+        }
+        if contact.bodyA.categoryBitMask == PhysicsCategory.brick
+        {
+            contact.bodyA.node?.removeFromParent()
+        }
+        if contact.bodyB.categoryBitMask == PhysicsCategory.brick
+        {
+            contact.bodyB.node?.removeFromParent()
         }
     }
     
