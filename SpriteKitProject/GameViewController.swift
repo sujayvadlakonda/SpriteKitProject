@@ -63,6 +63,4 @@ class GameViewController: UIViewController {
     @objc private func right() {
         scene.paddle.position.x += CGFloat(arrowKeySpeed)
     }
-    
-
 }
