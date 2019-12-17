@@ -5,8 +5,8 @@ struct PhysicsCategory {
     static let none      : UInt32 = 0
     static let ball   : UInt32 = 0b1
     static let paddle: UInt32 = 0b10
-    static let brick: UInt32 = 0b10
-    static let wall: UInt32 = 0b11
+    static let brick: UInt32 = 0b11
+    static let wall: UInt32 = 0b100
 }
 
 

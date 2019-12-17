@@ -14,7 +14,7 @@ import CoreMotion
 class GameViewController: UIViewController {
     var scene : GameScene!
     var motionManager : CMMotionManager!
-    
+    var arrowKeySpeed:Int = 10
     
     
     override func viewDidLoad() {
@@ -58,10 +58,10 @@ class GameViewController: UIViewController {
     }
     
     @objc private func left() {
-        scene.paddle.position.x -= 5
+        scene.paddle.position.x -= CGFloat(arrowKeySpeed)
     }
     @objc private func right() {
-        scene.paddle.position.x += 5
+        scene.paddle.position.x += CGFloat(arrowKeySpeed)
     }
     
 
