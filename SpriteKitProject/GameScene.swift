@@ -147,9 +147,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         
-        hearts[0].position = CGPoint(x: size.width * 0.033, y: size.height * 0.9)
-        hearts[1].position = CGPoint(x: size.width * 0.066, y: size.height * 0.9)
-        hearts[2].position = CGPoint(x: size.width * 0.099, y: size.height * 0.9)
+        hearts[0].position = CGPoint(x: size.width * 0.033, y: size.height * 0.1)
+        hearts[1].position = CGPoint(x: size.width * 0.066, y: size.height * 0.1)
+        hearts[2].position = CGPoint(x: size.width * 0.099, y: size.height * 0.1)
 
         for heart in hearts {
             heart.size.width /= 64
