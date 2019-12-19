@@ -15,6 +15,7 @@ class GameViewController: UIViewController {
     var scene : GameScene!
     var motionManager : CMMotionManager!
     var arrowKeySpeed:Int = 10
+    var loopRun: Timer!
     
     
     override func viewDidLoad() {
@@ -32,7 +33,7 @@ class GameViewController: UIViewController {
         motionManager.startAccelerometerUpdates()
         
         
-        let _ = Timer.scheduledTimer(timeInterval: 1.0, target:self, selector: #selector(self.loop), userInfo:nil,repeats: true)
+        loopRun = Timer.scheduledTimer(timeInterval: 1.0, target:self, selector: #selector(self.loop), userInfo:nil,repeats: true)
         //
     }
     
@@ -41,7 +42,11 @@ class GameViewController: UIViewController {
     @objc func loop()
     {
         if(scene.livesLeft == 0){
+            loopRun.invalidate()
+            loopRun = nil
             self.performSegue(withIdentifier: "666", sender: self)
+            scene = GameScene(size: view.bounds.size)
+            loopRun = Timer.scheduledTimer(timeInterval: 1.0, target:self, selector: #selector(self.loop), userInfo:nil,repeats: true)
         }
         
     }
