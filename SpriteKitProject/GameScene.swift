@@ -51,6 +51,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.addChild(rightBtn)
         }
         
+        // music setup
+        let backgroundMusic = SKAudioNode(fileNamed: "/Sounds/Atari Arcade Music - Super Breakout.mp3")
+        backgroundMusic.autoplayLooped = true
+        addChild(backgroundMusic)
+        
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         let outerBounds = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.frame.width - 25, height: self.frame.height)) //Makes space for the notch on the iPhone XR
@@ -179,7 +184,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         {
             ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             time += 1
-            if(time == 200)
+            if(time == 50)
             {
                 ball.position = CGPoint(x: size.width / 2, y: size.height * 0.3)
                 newRound = true
@@ -235,7 +240,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func randomImpulse() {
         let dx = Double.random(in: -3..<3)
-        let impulse = CGVector(dx: dx, dy: 10.0)
+        let impulse = CGVector(dx: dx, dy: 6.0)
         ball.physicsBody?.applyImpulse(impulse)
     }
     
